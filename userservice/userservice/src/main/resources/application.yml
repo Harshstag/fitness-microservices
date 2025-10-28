@@ -1,10 +1,12 @@
-server:
-  port: 8081
 spring:
   application:
     name: userservice
   datasource:
-    url: jdbc:h2:mem:fitness-micro-user;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    # Recommended: use absolute path on Windows or relative './data' to persist across restarts
+    # Example absolute Windows path:
+    # url: jdbc:h2:file:C:/Users/Harshstag/projects/fitness-micro-user/data/fitness-micro-user;AUTO_SERVER=TRUE
+    # Or relative (created in working dir):
+    url: jdbc:h2:file:./data/fitness-micro-user;AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -17,6 +19,8 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
+server:
+  port: 8081
 eureka:
   client:
     service-url:
