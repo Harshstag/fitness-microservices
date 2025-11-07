@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -20,12 +21,12 @@ public class RecommendationController {
     private RecommendationService recommendationService;
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Recommendation>> getUserRecommendations(String userId){
+    public ResponseEntity<List<Recommendation>> getUserRecommendations(@PathVariable("userId")  String userId){
         return ResponseEntity.ok(recommendationService.getUserRecommendations(userId));
     }
 
     @GetMapping("/activity/{activityId}")
-    public ResponseEntity<Recommendation> getActivityRecommendation(String activityId){
+    public ResponseEntity<Recommendation> getActivityRecommendation(@PathVariable("activityId")  String activityId){
         return ResponseEntity.ok(recommendationService.getActivityRecommendation(activityId));
     }
 }

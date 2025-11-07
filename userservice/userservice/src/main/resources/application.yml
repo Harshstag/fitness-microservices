@@ -1,27 +1,5 @@
 spring:
   application:
-    name: userservice
-  datasource:
-    # Recommended: use absolute path on Windows or relative './data' to persist across restarts
-    # Example absolute Windows path:
-    # url: jdbc:h2:file:C:/Users/Harshstag/projects/fitness-micro-user/data/fitness-micro-user;AUTO_SERVER=TRUE
-    # Or relative (created in working dir):
-    url: jdbc:h2:file:./data/fitness-micro-user;AUTO_SERVER=TRUE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.H2Dialect
-    show-sql: true
-server:
-  port: 8081
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+    name: user-service
+  config:
+    import: optional:configserver:http://localhost:8888

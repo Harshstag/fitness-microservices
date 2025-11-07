@@ -9,10 +9,7 @@ import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/activites")
@@ -26,12 +23,18 @@ public class ActivityController {
     private UserValidationService userValidationService;
 
     @PostMapping
-    public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest request){
+    public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest request) {
 
         Boolean isValid = userValidationService.validateUser(request.getUserId());
-        if(!isValid){
+        if (!isValid) {
             throw new RuntimeException("Invalid user Id : " + request.getUserId());
         }
-        return  ResponseEntity.ok(activityService.trackActivity(request));
+        return ResponseEntity.ok(activityService.trackActivity(request));
+    }
+
+    @GetMapping("/{activityId}")
+    public ResponseEntity<ActivityResponse> getActivity(@PathVariable("activityId") String activityId){
+        // Implementation for getting activity by ID can be added here
+        return ResponseEntity.ok(activityService.getActivity(activityId));
     }
 }
