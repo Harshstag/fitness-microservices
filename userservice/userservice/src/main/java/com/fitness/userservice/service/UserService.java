@@ -20,9 +20,12 @@ public class UserService {
 
 
         if(userRepository.existsByEmail(request.getEmail())){
-            throw new RuntimeException("Email Already Exists");
+            User existingUser = userRepository.findByEmail(request.getEmail());
+            return extractToUserResponse(existingUser);
+
         }
         User user = new User();
+        user.setKeycloakId(request.getKeycloakId());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         user.setFirstName(request.getFirstName());
@@ -30,17 +33,8 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        UserResponse userResponse = new UserResponse();
+        return extractToUserResponse(savedUser);
 
-        userResponse.setId(savedUser.getId());
-        userResponse.setEmail(savedUser.getEmail());
-        userResponse.setPassword(savedUser.getPassword());
-        userResponse.setFirstName(savedUser.getFirstName());
-        userResponse.setLastName(savedUser.getLastName());
-        userResponse.setCreatedAt(savedUser.getCreatedAt());
-        userResponse.setUpdatedAt(savedUser.getUpdatedAt());
-
-        return  userResponse;
 
     }
 
@@ -48,9 +42,17 @@ public class UserService {
 
         User user =  userRepository.findById(userId).orElseThrow(() ->new RuntimeException("User Not Found"));;
 
+
+        return extractToUserResponse(user);
+
+    }
+
+    private UserResponse extractToUserResponse(User user) {
+
         UserResponse userResponse = new UserResponse();
 
         userResponse.setId(user.getId());
+        userResponse.setKeycloakId(user.getKeycloakId());
         userResponse.setEmail(user.getEmail());
         userResponse.setPassword(user.getPassword());
         userResponse.setFirstName(user.getFirstName());
@@ -58,11 +60,12 @@ public class UserService {
         userResponse.setCreatedAt(user.getCreatedAt());
         userResponse.setUpdatedAt(user.getUpdatedAt());
         return userResponse;
-
     }
 
     public Boolean existByUserId(String userId) {
         log.info("Calling User Service to validate user Id: {}", userId);
-        return userRepository.existsById(userId);
+        return userRepository.existsByKeycloakId(userId);
     }
+
+
 }
